@@ -128,6 +128,9 @@ app.get("/callback", async function(req, res) {
         let tracks = tracksBody.data.items;
         var twentyEighteen = new Date("2018-12-31T00:00:00Z");
         while (new Date(tracksBody.data.items[0].added_at) > twentyEighteen) {
+          if (tracks.body.next === null) {
+            break;
+          }
           tracksBody = await axios.get(tracksBody.data.next, {
             headers: { Authorization: "Bearer " + access_token }
           });

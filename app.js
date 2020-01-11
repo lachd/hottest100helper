@@ -17,7 +17,9 @@ var cookieParser = require("cookie-parser");
 
 var client_id = "4622c4fb20e642ea947909d93da3690b"; // Your client id
 var client_secret = "16b8572a6967425593bbb8992b4c0e01"; // Your secret
-var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
+// local dev uri
+// var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
+var redirect_uri = "https://hottest100helper.herokuapp.com/callback"; // Your redirect uri
 
 const PORT = process.env.PORT || 8888;
 

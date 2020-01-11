@@ -19,6 +19,8 @@ var client_id = "4622c4fb20e642ea947909d93da3690b"; // Your client id
 var client_secret = "16b8572a6967425593bbb8992b4c0e01"; // Your secret
 var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
 
+const PORT = process.env.PORT || 8888;
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -267,5 +269,5 @@ app.get("/refresh_token", function(req, res) {
   });
 });
 
-console.log("Listening on 8888");
-app.listen(8888);
+console.log(`Listening on ${PORT}`);
+app.listen(PORT);

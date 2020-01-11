@@ -9,7 +9,6 @@
 
 var express = require("express"); // Express web server framework
 var request = require("request"); // "Request" library
-var reqAwait = require("./await-request");
 const axios = require("axios");
 var cors = require("cors");
 var querystring = require("querystring");
@@ -118,27 +117,21 @@ app.get("/callback", async function(req, res) {
 
         // console.log(userData);
 
-        var options = {
-          url:
-            "https://api.spotify.com/v1/me/tracks?" +
+        // use the access token to access the Spotify Web API
+        let tracksBody = await axios.get(
+          "https://api.spotify.com/v1/me/tracks?" +
             querystring.stringify({
               limit: 50
             }),
-          headers: { Authorization: "Bearer " + access_token },
-          json: true
-        };
-
-        // use the access token to access the Spotify Web API
-        let tracksBody = await reqAwait(options);
-        let tracks = tracksBody.items;
+          { headers: { Authorization: "Bearer " + access_token } }
+        );
+        let tracks = tracksBody.data.items;
         var twentyEighteen = new Date("2018-12-31T00:00:00Z");
-        while (new Date(tracksBody.items[0].added_at) > twentyEighteen) {
-          tracksBody = await reqAwait({
-            url: tracksBody.next,
-            headers: { Authorization: "Bearer " + access_token },
-            json: true
+        while (new Date(tracksBody.data.items[0].added_at) > twentyEighteen) {
+          tracksBody = await axios.get(tracksBody.data.next, {
+            headers: { Authorization: "Bearer " + access_token }
           });
-          tracks = tracks.concat(tracksBody.items);
+          tracks = tracks.concat(tracksBody.data.items);
         }
 
         tracks = tracks.filter(
